@@ -33,7 +33,7 @@ const getPrecioBase = () => {
             continuar = false;
             alert(`El precio ingresado es de: ${precioBase}`)
         }
-    } while (continuar)
+    } while (continuar) 
 }
 const agregarImpuestos = () => {
     let continuar;
