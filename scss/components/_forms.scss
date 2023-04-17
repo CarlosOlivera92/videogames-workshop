@@ -1,0 +1,23 @@
+/* FORMS */
+.contact .form {
+    .form-group {
+        width: 20rem;
+        margin: 1rem;
+        label {
+            color: map-get($colors, cblackest);
+        }
+        input,textarea,button {
+            margin: .5rem 0;
+        }
+    }
+}
+.newsletter {
+    background: linear-gradient(100deg, transparent 67%, map-get($colors, cred) 67%, map-get($colors, cred) 76.66%), 
+    map-get($colors, cwhite);
+    .news-content {
+        p,label,input {
+            color: map-get($colors, cblackest);
+        }
+    }
+}
+/* END OF FORMS */

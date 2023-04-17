@@ -1,0 +1,18 @@
+/*************** GLOBALS ***************/
+
+body {
+    background-color: map-get($colors, secondary);
+}
+
+.divider {
+    margin: .5rem 0;
+    width: 8rem;
+    height: 4px;
+    background-color: map-get($colors, cred );
+    border-radius: .5rem;
+}
+.active {
+    color: map-get($colors, cgreen );
+}
+/*************** END OF GLOBALS ***************/
+

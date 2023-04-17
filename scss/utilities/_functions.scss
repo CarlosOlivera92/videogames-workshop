@@ -1,0 +1,3 @@
+@function background-linear-gradient($angle, $color, $stop, $end-color) {
+    @return unquote("linear-gradient(#{$angle}, transparent #{$stop}, #{$color} #{$stop}, #{$color} #{($stop + 9.66%)}, #{$end-color})");
+}

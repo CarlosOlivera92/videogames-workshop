@@ -1,0 +1,27 @@
+@mixin button-style($color, $fcolor) {
+    padding: .375rem .75rem;
+    color: $fcolor;
+    font-weight: bolder;
+    border: 1px solid $color;
+	border-radius: .25rem;
+	font-size: 1rem;
+    width: fit-content;
+    line-height: 1.5;
+}
+ /*
+    la variable $fcolor corresponde al color que se le vaya a asignar a la fuente y $color corresponde al color que se le asigne al resto de propiedades
+*/
+
+@mixin center-vertically() {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+/* Establece el contenedor como una caja flexible con dirección vertical y centra verticalmente su contenido */
+@mixin align-and-justify($align:center, $justify:center) {
+    display: flex;
+    flex-direction: column;
+    align-items: $align;
+    justify-content: $justify;
+}
+/* Define un mixin para establecer las propiedades 'align-items' y 'justify-content' en un contenedor flexible con argumentos opcionales */

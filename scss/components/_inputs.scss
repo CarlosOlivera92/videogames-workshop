@@ -1,0 +1,25 @@
+/*************** INPUTS ***************/
+
+input, textarea {
+    color: map-get($colors, cblackest);
+    border: none;
+    font-size: 1rem;
+    border-radius: .9rem;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    padding: .9rem;
+    margin: 1rem;
+    background-color: #f5f5f5;
+    border-color: map-get($colors, cblackest);
+    transition: all 0.3s ease-in-out;
+}
+textarea:focus, input:focus{
+    outline-color: map-get($colors, cred);
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    border: none;
+}
+input::placeholder,
+textarea::placeholder {
+  color: #999;
+}
+/*************** END OF INPUTS ***************/
+

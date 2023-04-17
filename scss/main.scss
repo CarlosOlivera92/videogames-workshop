@@ -1,0 +1,23 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500&display=swap');
+
+@import 'utilities/maps';
+@import 'utilities/variables';
+@import 'utilities/mixins';
+@import 'utilities/functions';
+
+@import 'base/typo';
+@import 'base/reset';
+@import 'utilities/global';
+
+@import 'components/carousel';
+@import 'components/forms';
+@import 'components/inputs';
+@import 'components/buttons';
+@import 'components/cards';
+
+@import 'layout/header';
+
+@import 'views/home';
+@import 'layout/footer';
+
+@import 'utilities/media-queries';

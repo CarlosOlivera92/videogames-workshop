@@ -1,0 +1,40 @@
+/*************** HOME ***************/
+.hero {
+    position: relative;
+    .image {
+        position: relative;
+        height: 8rem;
+        background-image: url("https://images4.alphacoders.com/478/thumb-1920-47816.jpg");
+        background-size: 100%;
+        background-repeat: no-repeat;
+        background-position: center;
+        &::after {
+            content: "";
+            width: 100%;
+            height: 100%;
+            background-color: map-get($colors, primary);
+            position: absolute;
+            top: 0;
+            opacity: .7;
+        }
+    }
+    .content {
+        font-size: .6rem;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        top:0;
+        .title {
+            font-size: 1.5rem;
+        }
+    }
+}
+.newsletter {
+    .news-content {
+        @include center-vertically;
+        h2 {
+            color: map-get($colors, cblackest );
+        }
+    }
+}
+/*************** END OF HOME ***************/

@@ -1,0 +1,12 @@
+/*************** BUTTONS ***************/
+
+.button {
+    @include button-style(map-get($colors, cred), map-get($colors, cwhite));
+    &:hover {
+        background-color: map-get($colors, cred);
+    }
+    &:target {
+        background-color: map-get($colors, cred);
+    }
+}
+/*************** END OF BUTTONS ***************/
