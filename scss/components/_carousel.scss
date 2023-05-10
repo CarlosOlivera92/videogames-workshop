@@ -1,0 +1,32 @@
+.carousel-item {
+    width: 100%;
+    &::after {
+      content: "";
+      width: 100%;
+      height: 20rem;
+      background-color: map-get($colors, cblackest);
+      position: absolute;
+      top: 0;
+      left: 0;
+      opacity: .7;
+      z-index: 1;
+    }
+    img {
+        width: 100%;
+        height: 20rem;
+        object-fit: cover;
+        animation: aparecer 8s ease-in-out forwards, ampliar 12s ease-in-out forwards;
+    }
+    .carousel-caption {
+        width: 100%;
+        z-index: 100;
+        position: absolute;
+        top: 50%;
+        left: 0;
+        opacity: 0;
+        animation: aparecer 4s ease-in-out forwards;
+        h1,h2 {
+            font-size: 1.5rem;
+        }
+    }   
+}

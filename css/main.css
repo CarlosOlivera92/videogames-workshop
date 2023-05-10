@@ -81,6 +81,39 @@ body {
 }
 
 /*************** END OF GLOBALS ***************/
+.carousel-item {
+  width: 100%;
+}
+.carousel-item::after {
+  content: "";
+  width: 100%;
+  height: 20rem;
+  background-color: #000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  opacity: 0.7;
+  z-index: 1;
+}
+.carousel-item img {
+  width: 100%;
+  height: 20rem;
+  object-fit: cover;
+  animation: aparecer 8s ease-in-out forwards, ampliar 12s ease-in-out forwards;
+}
+.carousel-item .carousel-caption {
+  width: 100%;
+  z-index: 100;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  opacity: 0;
+  animation: aparecer 4s ease-in-out forwards;
+}
+.carousel-item .carousel-caption h1, .carousel-item .carousel-caption h2 {
+  font-size: 1.5rem;
+}
+
 /* FORMS */
 .contact .form .form-group {
   width: 20rem;
@@ -140,19 +173,79 @@ textarea::placeholder {
 }
 .button:hover {
   background-color: #d1363a;
+  color: #fff;
 }
 .button:target {
   background-color: #d1363a;
 }
 
 /*************** END OF BUTTONS ***************/
+.card {
+  display: flex;
+  justify-content: space-around;
+  width: 20rem;
+  height: 30rem;
+  margin: 1rem;
+  padding: 0;
+  border-radius: 0.7rem;
+  background-color: #111;
+  z-index: 10;
+}
+.card .image {
+  width: fit-content;
+  height: 20rem !important;
+}
+.card .image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.7rem 0.7rem 0 0;
+}
+.card .content {
+  width: 100%;
+  padding: 1rem;
+}
+
+.aside {
+  background-color: #111;
+}
+.aside .form {
+  color: #fff;
+  padding: 2rem !important;
+}
+.aside .form .fieldset {
+  display: flex;
+  flex-direction: column;
+}
+.aside .form .fieldset .form-item {
+  border-radius: 1rem;
+}
+.aside .form .fieldset .form-item:hover {
+  background-color: #1f1f1f;
+}
+
+.cart-items .cart-item .image {
+  width: 7rem;
+  height: 7rem;
+}
+.cart-items .cart-item .image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0.7rem;
+}
+.cart-items .cart-item .content {
+  padding: 0 1rem;
+}
+.cart-items .cart-item .content .button {
+  width: 100%;
+  font-size: 0.9rem !important;
+}
+
 /*************** HEADER ***************/
 .header {
-  position: fixed;
-  top: 0;
-  background-color: rgba(17, 17, 17, 0);
+  background-color: #111;
   transition: background-color 0.3s ease-in-out;
-  backdrop-filter: blur(0.3rem); /* Efecto de desenfoque */
   z-index: 100;
 }
 .header .logo img {
@@ -164,6 +257,10 @@ textarea::placeholder {
 .header .navmenu ul li a:hover {
   color: #DBFE7A;
 }
+.header .navmenu ul .dropdown {
+  position: relative;
+  z-index: 1000;
+}
 .header .navmenu ul .dropdown .dropdown-menu {
   display: none;
   position: absolute;
@@ -174,6 +271,7 @@ textarea::placeholder {
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
   height: 0; /* añadir esta propiedad */
   transition: all 0.3s ease;
+  z-index: 100;
 }
 .header .navmenu ul .dropdown .dropdown-menu li {
   width: fit-content;
@@ -192,6 +290,11 @@ textarea::placeholder {
 .header .navmenu ul .dropdown:hover .dropdown-menu {
   display: block;
   height: auto; /* añadir esta propiedad */
+  z-index: 100 !important;
+}
+.header .navmenu ul .dropdown:hover .dropdown-menu-right {
+  right: 0;
+  left: auto;
 }
 
 /*************** END OF HEADER ***************/

@@ -8,14 +8,116 @@
         <link rel="icon" type="image/png" sizes="32x32" href="assets/img/favicon-32x32.png">
         <link rel="stylesheet" href="css/bootstrap.css">
         <link rel="stylesheet" href="css/main.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous" />   
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <script src="js/bootstrap.js"></script>
-        <script src="js/app.js" defer></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+        <script type="module" src="js/app.js"></script>
     </head>
     <body>
-        <div class="row d-flex flex-column align-items-center justify-content-center">
-            <div class="container bg-primary p-3">
-                <h1 class="h1">Pre-Entrega 1 - Olivera Carlos</h1>
-                <h2 class="h2">App calculadora de impuestos para servicios de videojuegos del exterior a pesos argentinos</h2>
+        <!-- HEADER -->
+        <header id="header" class="header container-fluid d-flex flex-column flex-md-row flex-xl-row align-items-center justify-content-between p-3 p-md-3">
+            <!-- LOGO -->
+            <div class="logo">
+                <a href="../index.html" title="volver a inicio">
+                    <img src="../assets/img/Logo.png" alt="goodgame-logo" title="goodgame-logo">
+                </a>
+            </div>
+            <!-- NAVMENU -->
+            <nav class="navmenu">
+                <ul class="d-flex m-0 p-0 align-items-center">
+                    <li><a id="home-link" href="../index.html" title="inicio">Inicio</a></li>
+                    <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Catálogo <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="#">Videojuegos</a></li>
+                        <li><a href="#">Articulos Gamer</a></li>
+                        <li><a href="#">Play Station 5</a></li>
+                        <li><a href="#">XBOX Series</a></li>
+                    </ul>
+                    </li>
+                    <li><a id="contact-link" href="contacto.html" title="contacto">Contacto</a></li>
+                    <li class="dropdown">
+                        <button class="btn button">
+                            <i class="fas fa-shopping-cart"></i>
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-right">
+                            <p class="cart-title">No hay productos en el carrito</p>
+                            <div class="cart-items" id="cart-items">
+                                
+                            </div>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <div class="container-fluid">
+            <div class="row">
+                <aside class="aside col-md-2 col-12">
+                    <form class="form p-2 content">
+                        <p class="h4 text-center">
+                            <i class="fa fa-filter"></i>
+                            FILTRO 
+                        </p>
+                        <fieldset class="fieldset content">
+                            <legend>Precio</legend>
+                            <div class="form-item">
+                                <label>
+                                    <input type="radio" name="price" value="expensive" />
+                                    Más caro primero
+                                </label>
+                            </div>
+                            <div class="form-item">
+                                <label>
+                                    <input type="radio" name="price" value="cheap" />
+                                    Más barato primero
+                                </label>
+                            </div>
+                        </fieldset>
+                        <fieldset class="fieldset">
+                            <legend>Consolas</legend>
+                            <div class="form-item">
+                                <label>
+                                    <input type="checkbox" name="console" value="ps4" />
+                                    PS4
+                                </label>
+                            </div>
+                            <div class="form-item">
+                                <label>
+                                    <input type="checkbox" name="console" value="ps5" />
+                                    PS5
+                                </label>
+                            </div>
+                            <div class="form-item">
+                                <label>
+                                    <input type="checkbox" name="console" value="pc" />
+                                    PC
+                                </label>
+                            </div>
+                            <div class="form-item">
+                                <label>
+                                    <input type="checkbox" name="console" value="xbox" />
+                                    Xbox
+                                </label>
+                            </div>
+                            <div class="form-item">
+                                <label>
+                                    <input type="checkbox" name="console" value="switch" />
+                                    Nintendo Switch
+                                </label>
+                            </div>
+                            <button type="submit" class="btn btn-dark">Filtrar</button>
+                        </fieldset>
+                    </form> 
+                </aside>
+                <main class="col-md-10 col-12">
+                    <section class="products container" id="products">
+                        <div class="cards justify-content-center row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4">
+                            
+                        </div>
+                    </section>
+                </main>
             </div>
         </div>
     </body>

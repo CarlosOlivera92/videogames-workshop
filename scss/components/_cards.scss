@@ -1,0 +1,64 @@
+.card {
+    display: flex;
+    justify-content: space-around;
+    width: 20rem;
+    height: 30rem;
+    margin: 1rem;
+    padding: 0;
+    border-radius: .7rem;
+    background-color: map-get($map: $colors, $key: primary);
+    z-index: 10;
+    
+    .image {
+        width: fit-content;
+        height: 20rem !important;
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: .7rem .7rem 0 0;
+        }
+    }
+    .content {
+        width: 100%;
+        padding: 1rem;
+    }
+}
+.aside {
+    background-color: map-get($map: $colors, $key: primary);
+    .form {
+        color: map-get($map: $colors, $key: cwhite);
+        padding: 2rem !important;
+        .fieldset {
+            display: flex;
+            flex-direction: column;
+            .form-item {
+                border-radius: 1rem;
+                &:hover {
+                    background-color: map-get($map: $colors, $key: secondary);
+                }
+            }
+        }
+    }
+}
+.cart-items {
+    .cart-item {
+        .image {
+            width: 7rem;
+            height: 7rem ;
+            img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: .7rem;
+            }
+        }
+        .content {
+            padding:0 1rem ;
+            .button {
+                width: 100%;
+                font-size: .9rem !important;
+            }
+        }
+    }
+}

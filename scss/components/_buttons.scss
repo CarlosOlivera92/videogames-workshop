@@ -4,6 +4,7 @@
     @include button-style(map-get($colors, cred), map-get($colors, cwhite));
     &:hover {
         background-color: map-get($colors, cred);
+        color: map-get($map: $colors, $key: cwhite);
     }
     &:target {
         background-color: map-get($colors, cred);
