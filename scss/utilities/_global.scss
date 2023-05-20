@@ -14,5 +14,45 @@ body {
 .active {
     color: map-get($colors, cgreen );
 }
+.required {
+    color: map-get($map: $colors, $key: cred);
+}
+
+.alert-danger {
+    display: none;
+    background-color: map-get($map: $colors, $key: cred);
+    border: none;
+    p {
+        color: #fff;
+        font-weight: bolder;
+    }
+}
+.alert-success {
+    display: none;
+    border: none;
+    p {
+        font-weight: bolder;
+    }
+}
+
+.form-group {
+    .dropdown {
+        .dropdown-menu {
+            background-color: red;
+            margin: 0;
+            padding: 0;
+            outline: none;
+            inset: 0 !important;
+            border: none;
+        }
+    }
+}
+
+
+.alert-info {
+    background-color: map-get($map: $colors, $key: secondary);
+    border: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
 /*************** END OF GLOBALS ***************/
 

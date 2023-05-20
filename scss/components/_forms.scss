@@ -1,23 +1,24 @@
 /* FORMS */
-.contact .form {
+form {
+    background-color: #1a1a1a;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 1rem;
     .form-group {
         width: 20rem;
         margin: 1rem;
         label {
-            color: map-get($colors, cblackest);
+            color: map-get($colors, cwhitest);
         }
         input,textarea,button {
             margin: .5rem 0;
         }
     }
 }
-.newsletter {
-    background: linear-gradient(100deg, transparent 67%, map-get($colors, cred) 67%, map-get($colors, cred) 76.66%), 
-    map-get($colors, cwhite);
-    .news-content {
-        p,label,input {
-            color: map-get($colors, cblackest);
-        }
-    }
+.checkout {
+    background-color: map-get($map: $colors, $key: primary);
+}
+.checkout-preview {
+    background-color: map-get($map: $colors, $key: primary);
 }
 /* END OF FORMS */
