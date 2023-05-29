@@ -1,40 +1,82 @@
-/*************** HOME ***************/
 .hero {
+    background-size: contain;
+    background-position: top;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+
+  .banner {
+    width: 100%;
+    height: 40rem;
     position: relative;
-    .image {
-        position: relative;
-        height: 8rem;
-        background-image: url("https://images4.alphacoders.com/478/thumb-1920-47816.jpg");
-        background-size: 100%;
-        background-repeat: no-repeat;
-        background-position: center;
-        &::after {
-            content: "";
-            width: 100%;
-            height: 100%;
-            background-color: map-get($colors, primary);
-            position: absolute;
-            top: 0;
-            opacity: .7;
-        }
-    }
-    .content {
-        font-size: .6rem;
+    background-color: map-get($map: $colors, $key: cwhite);
+    overflow: hidden;
+    .images {
+      .background {
+        position: absolute;
+        top: 0;
+        left: 45%;
         width: 100%;
         height: 100%;
+        background-color:#F47D31;
+        clip-path: polygon(0 0, 100% 0, 500% 100%, 15% 100%); /* Forma diagonal */
+      }
+      .imagen {
+        height: fit-content;
         position: absolute;
-        top:0;
-        .title {
-            font-size: 1.5rem;
+        top: 3rem;
+        left: 40%;
+        img {
+          width: 100%;
+          object-fit: cover;
         }
+      }
     }
-}
-.newsletter {
-    .news-content {
-        @include center-vertically;
-        h2 {
-            color: map-get($colors, cblackest );
+    .content {
+      width: fit-content;
+      position: absolute;
+      top: 0;
+      left: 0;
+      padding: 4rem;
+      .counterStrike {
+        width: 100%;
+        text-align: center;
+        -webkit-text-fill-color: #000;
+
+        span {
+          color: #F47D31 !important;
+          -webkit-text-fill-color: #fff;
+          -webkit-text-stroke: 2px #000;
+          img {
+            width: 4rem;
+          }
         }
+      }
+      .trailer {
+        width: 100%;
+        iframe {
+          width: 100%;
+          border-radius: 1rem;
+        }
+      }
+      .options {
+        .platforms {
+          .icon {
+            width: fit-content;
+            img {
+              width: 8rem;
+              object-fit: contain;
+              transition: all .3s ease-in-out;
+              &:hover {
+                transform: scale(1.3);
+              }
+            }
+          }
+        }
+      }
     }
-}
+  }
 /*************** END OF HOME ***************/

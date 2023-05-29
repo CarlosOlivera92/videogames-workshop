@@ -1,8 +1,15 @@
 /*************** TYPOS ***************/
+@import url('https://fonts.cdnfonts.com/css/bebas-neue');
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@400;500;700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/counter-strike');
 
 @font-face {
     font-family: "DeadZoneBold";
     src: url(../assets/fonts/Dead\ Zone\ Bold.ttf);
+}
+@font-face {
+    font-family: "Zelda";
+    src: url(../assets/fonts/zelda.otf);
 }
 h1,h2,h3,h4,h5,h6,a,li,p,input,label,button,textarea,blockquote,cite {
     list-style: none;
@@ -19,7 +26,15 @@ h1,h2,h3,h4,h5,h6,a,li,p,input,label,button,textarea,blockquote,cite {
     background-clip: text;
     -webkit-background-clip: text;
     color: transparent;
+    
 }
+.counterStrike {
+    font-family: "counter-strike";
+    font-size: 3rem;
+    color: transparent;
+    -webkit-text-stroke: 2px #000; /* Borde doble de 2 píxeles de ancho */
+    -webkit-text-fill-color: transparent; /* Relleno transparente */
+  }
 .subtitle {
     margin-top: 1rem;
     font-size: 1.5rem;
@@ -45,4 +60,28 @@ h1,h2,h3,h4,h5,h6,a,li,p,input,label,button,textarea,blockquote,cite {
     margin: 1rem 0;
     color: map-get($colors, cred);
 }
+.zelda {
+    font-family: 'zelda', sans-serif;
+    font-size: 3rem !important;
+    color: #ff212121;
+    text-shadow: 2px 2px 4px rgba(0, 128, 0, 0.3);
+}
+.pubg {
+    font-family: 'Teko', sans-serif;
+    font-size: 3rem !important;
+    transition: color .3s ease-out;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    &:hover {
+        color:  #FFC300;
+    }
+}
+
+.tlou {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 4rem !important;
+    background: linear-gradient(#fff 40%, #111 90%);
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
 /*************** END OF TYPOS ***************/

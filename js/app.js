@@ -1,24 +1,15 @@
 'use strict';
-import { Producto } from './classes/PRODUCTO.js';
 import { Customers } from './classes/customers.js';
 import { Factura } from './classes/factura.js';
 import { TarjetasDeCredito } from './classes/tarjetasdecredito.js';
+import { getGameData } from './services/rawgService.js';
 const { jsPDF } = window.jspdf
 
 const toastr = window.toastr;
-
-const tlou = new Producto(1,"The Last Of Us" , "PS3,PS4,PS5,PC", 60, "https://i.blogs.es/b9a176/image_2022-06-09_222051649/840_560.png")
-const gtav = new Producto(2, "Grand Theft Auto V", "PS3,PS4,PS5, XBOX, PC", 39.98, "https://i.blogs.es/dfbccc/trucosgtavps4/1366_2000.jpg");
-const sonsoftheforest = new Producto(3, "Sons of The Forest", "PC", 29.99, "https://errekgamer.com/wp-content/uploads/2023/01/Presentan-Sons-of-the-Forest-la-secuela-del-aclamado-The-Forest.jpg");
-const rdr2 = new Producto(4, "Red Dead Redemption 2", "PC", 29.20, "https://as01.epimg.net/meristation/imagenes/2018/10/22/header_image/87072801540239406.jpg");
-const hogwartsLegacy = new Producto(5, "Hogwarts Legacy", "PC/PS4/PS5", 59.99, "https://media.tycsports.com/files/2023/02/12/533536/hogwarts-legacy-_1440x810_wmk.webp");
-const re4Remake = new Producto(6, "Resident Evil 4 Remake", "PC,PS4,PS5,XBOX", 59.99, "https://img.youtube.com/vi/b9OEQAW5m2k/maxresdefault.jpg");
-
-const productos = [tlou, gtav, sonsoftheforest, rdr2, hogwartsLegacy, re4Remake];
+const productos = [];
 let carrito = [];
 
 let currentPageUrl = window.location.href;
-
 
 const cartContainer = document.querySelector('.cart-items');
 const cartTitle = document.querySelector('.cart-title');
@@ -34,15 +25,83 @@ let formatedTotal = 0;
 
 if (localStorage.getItem('cart') !== null) {
   carrito = JSON.parse(localStorage.getItem('cart'));
-  console.log(carrito);
 } else {
   
 }
+window.addEventListener('DOMContentLoaded', function() {
+  let header = document.getElementById("header");
+  let carousel = document.getElementById("caroussel");
+  let carouselBottom = carousel ? carousel.offsetTop + carousel.offsetHeight : 0;
+  let scrollThreshold = carouselBottom - 100; // Ajusta este valor a tu preferencia
+
+  function setHeaderBackground() {
+    if (carousel && window.pageYOffset < scrollThreshold) {
+      header.style.backgroundColor = "rgba(1, 1, 1, 0)"; /* Fondo transparente */
+      header.style.position = "fixed"; /* Mantener la posición fija */
+    } else {
+      header.style.backgroundColor = "rgba(17, 17, 17, 1)"; /* Fondo sólido */
+      header.style.position = "fixed"; /* Mantener la posición fija */
+    }
+
+    if (!carousel) {
+      header.style.backgroundColor = "rgba(17, 17, 17, 1)"; /* Fondo sólido */
+      header.style.position = "relative"; /* Cambiar la posición a relative */
+    }
+  }
+
+  window.addEventListener('scroll', setHeaderBackground);
+
+  // Ejecutar la función al cargar la página
+  setHeaderBackground();
+});
+
+// Agregar esta línea de código para verificar si la página contiene un elemento con ID "carousel"
+if (!document.getElementById("caroussel")) {
+  let header = document.getElementById("header");
+  header.style.backgroundColor = "rgba(17, 17, 17, 1)"; /* Fondo sólido */
+  header.style.position = "relative"; /* Cambiar la posición a relative */
+}
+
+// Establecer la clase "active" en el enlace correspondiente
+if (currentPageUrl === '/index.html') {
+  document.getElementById('home-link').classList.add('active');
+} else if (currentPageUrl === '/pages/productos.html') {
+  document.getElementById('products-link').classList.add('active');
+} else if (currentPageUrl === '/pages/contacto.html') {
+  document.getElementById('contact-link').classList.add('active');
+}
+
 //Calculadora de precio de videojuegos de Steam Argentina.
 const convertirPesoArgentino = (valorProd) => {
   divisaConvertida = valorProd * valorDolar;
   return divisaConvertida;
 }
+const generatePrice = () => {
+  const min = 10;
+  const max = 90;
+  return (Math.floor(Math.random() * (max - min + 1)) + min).toFixed(2);
+}
+const getData = async (cantProductos, currentPageUrl) => {
+  try {
+    let juegos = await getGameData();
+    for (let juego of juegos.results) {
+      productos.push(juego);
+      console.log(juego)
+    }
+    productos.forEach((product) => {
+      if (!product.precio) {
+        product.precio = generatePrice();
+      }
+    });
+
+    createProductsDom(cantProductos, currentPageUrl);
+    renderImages( cantProductos, ...productos,);
+
+  } catch (error) {
+    console.log('Error al obtener los datos:', error);
+  }
+  loading.style.display = 'none';
+};
 const calcularImpuestos = (base) => {
     let ganancias = base * GANANCIAS;
     let pais = (base * PAIS);
@@ -50,30 +109,52 @@ const calcularImpuestos = (base) => {
     return totalImpuestos;
 }
 // Crear elementos HTML para los productos
-const createProductsDom = () => {
+const createProductsDom = (cantProductos, currentPageUrl) => {
+
   const productContainer = document.getElementById('products');
   const cardsContainer = productContainer.querySelector(".cards");
-  for (let i = 0; i < productos.length; i++) {
+  let newClassElements;
+  let buttonClass;
+  if (currentPageUrl.endsWith('/index.html')) {
+    newClassElements = "game-preview";
+    buttonClass = 'd-block';
+  } else {
+    newClassElements = "card";
+    buttonClass = 'd-none';
+  }
+  for (let i = 0; i < cantProductos; i++) {
     const product = productos[i];
+    // Obtener la información de las plataformas
+    let platformsInfo = "";
+    product.platforms.forEach(platform => {
+      platformsInfo += `${platform.platform.name}, `;
+    });
+    platformsInfo = platformsInfo.slice(0, -2); // Eliminar la última coma y espacio
+
     const card = `
-    <div class="card">
+      <div class="${newClassElements}">
         <div class="image">
-            <img src="${product.imgUri}" alt="">
+          <img src="${product.background_image}" alt="">
         </div>
         <div class="content">
-            <div class=" card-title my-4">
-              <p class="h4">${product.nombre}</p>
-              <p class="h5">Plataforma ${product.detalle}</p>
-            </div>
-            <div class=" body ">
-              <p class="card-text">Precio: ${product.precio} DLS</p>
-              <button class="btn button addBtn" type="button" data-id="${product.id}">Agregar al carrito</button>
-            </div>
+          <div class=" card-title my-4">
+            <p class="h4 game-title">${product.name}</p>
+            <p class="h5 platform">Plataforma: ${platformsInfo}</p>
+          </div>
+          <div class="body">
+            <p class="card-text precio">Precio: ${product.precio} DLS</p>
+            <button class="btn button addBtn" type="button" data-id="${product.id}">Agregar al carrito</button>
+          </div>
         </div>
-    </div>
-  `;
+      </div>
+    `;
   cardsContainer.innerHTML += card;
   }
+  cardsContainer.innerHTML += `
+  <a class=" ${buttonClass}" href="pages/productos.html">
+  <button class="btn button w-100 p-2">Ir a Productos</button>
+  </a>
+  `;
   // Agregar evento de clic en el botón "Agregar al carrito"
   const addBtn = document.querySelectorAll('.addBtn');
   for (let i = 0; i < addBtn.length; i++) {
@@ -81,11 +162,41 @@ const createProductsDom = () => {
       const productId = event.target.dataset.id; // obtener el ID del producto correspondiente al botón que se ha hecho clic
       let addedProduct = productos.find(product => product.id == productId);
       carrito.push(addedProduct);
-      toastr.success(`El producto ${addedProduct.nombre} ha sido agregado al carrito`);
+      toastr.success(`El producto ${addedProduct.name} ha sido agregado al carrito`);
       renderCart();
     });
   }
 }
+const renderImages = ( cantProd, ...productos) => {
+  console.log(productos);
+  const imagesContainer = document.getElementById('images-container');
+  let imageHtml = '';
+  let visitedProducts = new Set(); // Utilizamos un conjunto para almacenar los productos visitados
+  let count = 0;
+
+  for (let product of productos) {
+    if (!visitedProducts.has(product.id)) { // Verificamos si el producto ya ha sido visitado
+      visitedProducts.add(product.id); // Agregamos el producto al conjunto de productos visitados
+
+      if (product.short_screenshots.length > 0) { // Verificamos si el producto tiene imágenes
+        const image = product.short_screenshots[1]; // Tomamos solo la primera imagen
+
+        imageHtml += `
+          <div class="card image">
+            <img src="${image.image}" alt="">
+          </div>
+        `;
+        count++;
+      }
+    }
+    if (count === cantProd) {
+      break;
+    }
+  }
+
+  imagesContainer.innerHTML = imageHtml; // Actualizamos el contenedor de imágenes
+}
+
 const delBtns = () => {
     // Agregar eventos de clic en los botones "Eliminar del carrito"
     const delBtns = document.querySelectorAll('.delBtn');
@@ -119,36 +230,38 @@ const delBtns = () => {
       });
     }
 }
+
 const showCheckout = () => {
-  checkoutContainer.innerHTML = ``;
-  let checkoutInfo = ``;
-  total = 0; // reiniciar la variable total al comienzo de la función
+  checkoutContainer.innerHTML = '';
+  let checkoutInfo = '';
+  total = 0;
   for (const product of carrito) {
     const cartItem = `
       <div class="cart-item d-flex flex-row my-3">
         <div class="image my-auto">
-          <img src="${product.imgUri}" alt="">
+          <img src="${product.background_image}" alt="">
         </div>
-        <div class="content ">
-          <p>${product.nombre}</p>
+        <div class="content">
+          <p>${product.name}</p>
           <p>Precio: ${product.precio}DLS</p>
           <button class="btn button delBtn" type="button" data-id="${product.id}">Eliminar del carrito</button>
         </div>
       </div>
     `;
     checkoutContainer.innerHTML += cartItem;
-  } 
+    const precio = parseFloat(product.precio); // Convertir el precio a número
+    if (!isNaN(precio)) {
+      total += precio;
+    }
+  }
+
   if (carrito.length > 0) {
-    total = carrito.reduce((accumulator, currentValue) => {
-      return accumulator + currentValue.precio;
-    }, 0);
-    divisaConvertida = convertirPesoArgentino(total);
-    totalImpuestos = calcularImpuestos(divisaConvertida);
-    totalImpuestos = totalImpuestos.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'});
-    formatedTotal = totalImpuestos;
+    const divisaConvertida = convertirPesoArgentino(total);
+    const totalImpuestos = calcularImpuestos(divisaConvertida);
+    const formatedTotal = totalImpuestos.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
     checkoutInfo = `
       <div class="buyInfo d-flex flex-column align-items-center p-2 rounded">
-        <p class="text-muted">El valor se convierte a pesos y se le agregan los impuestos correspondientes </p>
+        <p class="text-muted">El valor se convierte a pesos y se le agregan los impuestos correspondientes</p>
         <p class="text-center total">Total: ${formatedTotal} ARS</p>
       </div>
     `;
@@ -158,42 +271,42 @@ const showCheckout = () => {
     cartTitle.textContent = 'No hay productos en su carrito';
   }
   delBtns();
-}
+};
 // Crear elementos HTML para el carrito
 const renderCart = () => {
-  cartContainer.innerHTML = ``;
-  let buyInfo = ``;
-  total = 0; // reiniciar la variable total al comienzo de la función
+  cartContainer.innerHTML = '';
+  let buyInfo = '';
+  total = 0;
   for (const product of carrito) {
     const cartItem = `
       <div class="cart-item d-flex flex-row my-3">
         <div class="image">
-          <img src="${product.imgUri}" alt="">
+          <img src="${product.background_image}" alt="">
         </div>
         <div class="content">
-          <p>${product.nombre}</p>
+          <p>${product.name}</p>
           <p>Precio: ${product.precio}DLS</p>
           <button class="btn button delBtn" type="button" data-id="${product.id}">Eliminar del carrito</button>
         </div>
       </div>
     `;
     cartContainer.innerHTML += cartItem;
-  } 
+    const precio = parseFloat(product.precio); // Convertir el precio a número
+    if (!isNaN(precio)) {
+      total += precio;
+    }
+  }
 
   if (carrito.length > 0) {
     cartTitle.textContent = 'Su compra';
-    total = carrito.reduce((accumulator, currentValue) => {
-      return accumulator + currentValue.precio;
-    }, 0);
-    divisaConvertida = convertirPesoArgentino(total);
-    totalImpuestos = calcularImpuestos(divisaConvertida);
-    totalImpuestos = totalImpuestos.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'});
-    formatedTotal = totalImpuestos;
+    const divisaConvertida = convertirPesoArgentino(total);
+    const totalImpuestos = calcularImpuestos(divisaConvertida);
+    const formatedTotal = totalImpuestos.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
     buyInfo = `
       <div class="buyInfo bg-dark d-flex flex-column align-items-center p-2 rounded">
         <p class="text-center total">Total: ${formatedTotal} ARS</p>
-        <p class="text-muted">El valor se convierte a pesos y se le agregan los impuestos correspondientes </p>
-        <a href="../pages/compra.html"> <button type="button" class="btn button"> Comprar Ahora </button> </a>
+        <p class="text-muted">El valor se convierte a pesos y se le agregan los impuestos correspondientes</p>
+        <a href="../pages/compra.html"><button type="button" class="btn button">Comprar Ahora</button></a>
       </div>
     `;
     cartContainer.innerHTML += buyInfo;
@@ -201,8 +314,8 @@ const renderCart = () => {
   } else {
     cartTitle.textContent = 'No hay productos en su carrito';
   }
-  delBtns()
-}
+  delBtns();
+};
 
 const setAlertVisibility = ( alertElements, isVisible ) => {
   if (Array.isArray(alertElements)) {
@@ -214,7 +327,35 @@ const setAlertVisibility = ( alertElements, isVisible ) => {
   }
 }
 if (currentPageUrl.endsWith("/productos.html")) {
-  createProductsDom();
+  const loading = document.getElementById('loading');
+  const btnIcons = document.querySelectorAll('.btn-icon');
+  loading.style.display = 'flex';
+  loading.style.flexDirection = 'Column';
+  loading.style.position = 'fixed';
+  loading.style.top = '0';
+  loading.style.left = '0';
+  loading.style.width = '100%';
+  loading.style.height = '100%';
+  loading.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+  loading.style.display = 'flex';
+  loading.style.justifyContent = 'center';
+  loading.style.alignItems = 'center';
+  btnIcons.forEach(btnIcon => {
+    const input = btnIcon.querySelector('input');
+    const iconWrapper = btnIcon.querySelector('.icon-wrapper');
+
+    btnIcon.addEventListener('click', function() {
+      input.checked = !input.checked;
+      iconWrapper.classList.toggle('active', input.checked);
+    });
+  });
+  getData(20, currentPageUrl);
+  // Obtener el formulario de filtro
+
+  
+
+
+
   if(carrito !== null ) {
     renderCart();
   }
@@ -312,7 +453,6 @@ if (currentPageUrl.endsWith("/productos.html")) {
     
     factura.calcularTotal();
     
-    console.log(factura);
 
     let facturacion = JSON.stringify(factura);
     sessionStorage.setItem("facturacion", facturacion);
@@ -453,7 +593,6 @@ if (currentPageUrl.endsWith("/productos.html")) {
     validateForm();
   });
   fecha.addEventListener('input', (event) => {
-    console.log(event.target.value);
     if (event.target.value == '') {
       setAlertVisibility(fechaErrorMessage, true);
       setAlertVisibility(fechaSuccessMessage, false);
@@ -614,4 +753,26 @@ if (currentPageUrl.endsWith("/productos.html")) {
       submitBtn.disabled = false;
     }, 2000);
 });
+} else if (currentPageUrl.endsWith('/index.html')) {
+
+const sections = document.querySelectorAll('.fade-in-section');
+
+const options = {
+  threshold: 0.1 // Porcentaje del elemento visible necesario para que se active la animación
+};
+const observer = new IntersectionObserver((entries, observer) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.opacity = '1';
+    } else {
+      entry.target.style.opacity = '0'; // Restablecer la opacidad a 0 cuando se deja de observar
+    }
+  });
+}, options);
+
+sections.forEach(section => {
+  observer.observe(section);
+});
+
+getData(8, currentPageUrl);
 }

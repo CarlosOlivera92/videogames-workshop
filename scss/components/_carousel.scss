@@ -1,32 +1,43 @@
-.carousel-item {
-    width: 100%;
-    &::after {
-      content: "";
+.carousel-inner {
+    .carousel-item {
+      position: relative;
       width: 100%;
-      height: 20rem;
-      background-color: map-get($colors, cblackest);
-      position: absolute;
-      top: 0;
-      left: 0;
-      opacity: .7;
-      z-index: 1;
-    }
-    img {
+      height: 44rem;
+      padding: 0;
+      margin: 0;
+
+      &::after {
+        content: "";
         width: 100%;
-        height: 20rem;
+        height: 100%;
+        background-color: map-get($colors, cblackest);
         object-fit: cover;
-        animation: aparecer 8s ease-in-out forwards, ampliar 12s ease-in-out forwards;
-    }
-    .carousel-caption {
-        width: 100%;
-        z-index: 100;
         position: absolute;
-        top: 50%;
+        top: 0;
         left: 0;
-        opacity: 0;
-        animation: aparecer 4s ease-in-out forwards;
-        h1,h2 {
-            font-size: 1.5rem;
+        opacity: .7;
+        z-index: 1;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover !important;
+        animation: aparecer 8s ease-in-out forwards, ampliar 12s ease-in-out forwards;
+      }
+      .carousel-caption {
+        width: fit-content; 
+        position: absolute;
+        top: 20%;
+        left: 15%;
+        color: white;
+        text-align: center;
+        text-align: center;
+        z-index: 100;     
+        h1 {
+            width: 100%;
+            font-size: 2.5rem !important;
+            font-weight: bolder;
         }
-    }   
-}
+      }
+    }
+  }

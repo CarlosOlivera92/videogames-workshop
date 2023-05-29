@@ -10,5 +10,19 @@
         background-color: map-get($colors, cred);
     }
 }
-
+.btn-icon {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: .5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-icon i {
+    margin-right: 0.5rem;
+  }
+  .btn-icon.active i {
+    color: green;
+  }
 /*************** END OF BUTTONS ***************/

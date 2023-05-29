@@ -55,64 +55,81 @@
       </header>
         <div class="container-fluid">
           <div class="row">
-              <aside class="aside col-md-2 col-12">
-                  <form class="form p-2">
-                      <p class="h4 text-center">
-                          <i class="fa fa-filter"></i>
-                          FILTRO 
-                      </p>
-                      <fieldset class="fieldset">
-                          <legend>Precio</legend>
-                          <div class="form-item">
-                              <label>
-                                  <input type="radio" name="price" value="expensive" />
-                                  Más caro primero
-                              </label>
-                          </div>
-                          <div class="form-item">
-                              <label>
-                                  <input type="radio" name="price" value="cheap" />
-                                  Más barato primero
-                              </label>
-                          </div>
-                      </fieldset>
-                      <fieldset class="fieldset">
-                          <legend>Consolas</legend>
-                          <div class="form-item">
-                              <label>
-                                  <input type="checkbox" name="console" value="ps4" />
-                                  PS4
-                              </label>
-                          </div>
-                          <div class="form-item">
-                              <label>
-                                  <input type="checkbox" name="console" value="ps5" />
-                                  PS5
-                              </label>
-                          </div>
-                          <div class="form-item">
-                              <label>
-                                  <input type="checkbox" name="console" value="pc" />
-                                  PC
-                              </label>
-                          </div>
-                          <div class="form-item">
-                              <label>
-                                  <input type="checkbox" name="console" value="xbox" />
-                                  Xbox
-                              </label>
-                          </div>
-                          <div class="form-item">
-                              <label>
-                                  <input type="checkbox" name="console" value="switch" />
-                                  Nintendo Switch
-                              </label>
-                          </div>
-                          <button type="submit" class="btn btn-dark">Filtrar</button>
-                      </fieldset>
-                  </form> 
+              <aside class="aside col-md-3 col-12">
+                
+                <form class="form p-2">
+                    <p class="h4 text-center">
+                      <i class="fas fa-filter"></i>
+                      FILTRO 
+                    </p>
+                    <fieldset class="fieldset">
+                      <legend>Precio</legend>
+                      <div class="form-item">
+                        <label class="btn-icon">
+                          <input type="radio" name="price" value="expensive" style="display: none;">
+                          <span class="icon-wrapper"><i class="fas fa-dollar-sign"></i></span>
+                          Más caro primero
+                        </label>
+                      </div>
+                      <div class="form-item">
+                        <label class="btn-icon">
+                          <input type="radio" name="price" value="cheap" style="display: none;">
+                          <span class="icon-wrapper"><i class="fas fa-dollar-sign"></i></span>
+                          Más barato primero
+                        </label>
+                      </div>
+                    </fieldset>
+                    <fieldset class="fieldset">
+                      <legend>Plataformas</legend>
+                      <div class="form-item">
+                        <label class="btn-icon">
+                          <input type="checkbox" name="console" value="ps4" style="display: none;">
+                          <span class="icon-wrapper"><i class="fab fa-playstation"></i></span>
+                          PS4
+                        </label>
+                      </div>
+                      <div class="form-item">
+                        <label class="btn-icon">
+                          <input type="checkbox" name="console" value="ps5" style="display: none;">
+                          <span class="icon-wrapper"><i class="fab fa-playstation"></i></span>
+                          PS5
+                        </label>
+                      </div>
+                      <div class="form-item">
+                        <label class="btn-icon">
+                          <input type="checkbox" name="console" value="pc" style="display: none;">
+                          <span class="icon-wrapper"><i class="fas fa-desktop"></i></span>
+                          PC
+                        </label>
+                      </div>
+                      <div class="form-item">
+                        <label class="btn-icon">
+                          <input type="checkbox" name="console" value="xbox" style="display: none;">
+                          <span class="icon-wrapper"><i class="fab fa-xbox"></i></span>
+                          Xbox
+                        </label>
+                      </div>
+                      <div class="form-item">
+                        <label class="btn-icon">
+                          <input type="checkbox" name="console" value="switch" style="display: none;">
+                          <span class="icon-wrapper"><i class="fas fa-gamepad"></i></span>
+                          Nintendo Switch
+                        </label>
+                      </div>
+                      <button type="submit" class="btn btn-dark">
+                        <i class="fas fa-search"></i>
+                        Filtrar
+                      </button>
+                    </fieldset>
+                  </form>                         
               </aside>
-              <main class="col-md-10 col-12">
+              <div id="loading" class="text-center col-md-8 p-4" style="display: none;">
+                <div class="spinner-border text-primary" role="status">
+                  <span class="visually-hidden">Cargando...</span>
+                </div>
+                <p>Cargando...</p>
+              </div>
+              <main class="col-md-9 col-12">
                   <section class="products container" id="products">
                       <div class="cards justify-content-center row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4">
                           
@@ -121,5 +138,25 @@
               </main>
           </div>
       </div>
+      <footer class="footer container-fluid p-2 p-md-4 row m-0 align-items-center justify-content-center justify-content-md-start">
+        <!-- LOGO -->
+        <div class="footer-logo col-auto">
+            <a href="../index.html"> 
+                <img src="../assets/img/logo-2.png" alt="goodgame-logo" title="goodgame-logo">
+            </a>
+        </div>
+        <!-- NAVMENU -->
+        <nav class="footer-nav col-auto">
+            <ul class="d-flex m-0 p-0">
+                <li><a href="../index.html" title="inicio">Inicio</a></li>
+                <li><a href="productos.html" title="juegos">Juegos</a></li>
+                <li><a href="contacto.html" title="contacto">Contacto</a></li>
+            </ul>
+        </nav>
+        <!-- DISCLAIMER -->
+        <div class="disclaimer col-auto">
+            <p class="m-0"> &#169;GoodGame 2023 Todos los derechos reservados</p>
+        </div>
+    </footer>
     </body>
 </html>

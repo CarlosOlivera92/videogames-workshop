@@ -1,6 +1,6 @@
 /*************** HEADER ***************/
 .header {
-    background-color: map-get($map: $colors, $key: primary);
+    background-color: transparent;
     transition: background-color .3s ease-in-out;
     z-index: 100;
     .logo {

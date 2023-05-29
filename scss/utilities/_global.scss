@@ -48,6 +48,10 @@ body {
     }
 }
 
+.fade-in-section {
+    opacity: 0;
+    transition: opacity 1s ease;
+}
 
 .alert-info {
     background-color: map-get($map: $colors, $key: secondary);

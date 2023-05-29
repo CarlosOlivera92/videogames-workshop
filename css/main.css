@@ -6,9 +6,16 @@
 /* Establece el contenedor como una caja flexible con dirección vertical y centra verticalmente su contenido */
 /* Define un mixin para establecer las propiedades 'align-items' y 'justify-content' en un contenedor flexible con argumentos opcionales */
 /*************** TYPOS ***************/
+@import url("https://fonts.cdnfonts.com/css/bebas-neue");
+@import url("https://fonts.googleapis.com/css2?family=Teko:wght@400;500;700&display=swap");
+@import url("https://fonts.cdnfonts.com/css/counter-strike");
 @font-face {
   font-family: "DeadZoneBold";
   src: url(../assets/fonts/Dead\ Zone\ Bold.ttf);
+}
+@font-face {
+  font-family: "Zelda";
+  src: url(../assets/fonts/zelda.otf);
 }
 h1, h2, h3, h4, h5, h6, a, li, p, input, label, button, textarea, blockquote, cite {
   list-style: none;
@@ -26,6 +33,14 @@ h1, h2, h3, h4, h5, h6, a, li, p, input, label, button, textarea, blockquote, ci
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
+}
+
+.counterStrike {
+  font-family: "counter-strike";
+  font-size: 3rem;
+  color: transparent;
+  -webkit-text-stroke: 2px #000; /* Borde doble de 2 píxeles de ancho */
+  -webkit-text-fill-color: transparent; /* Relleno transparente */
 }
 
 .subtitle {
@@ -54,6 +69,32 @@ h1, h2, h3, h4, h5, h6, a, li, p, input, label, button, textarea, blockquote, ci
   padding: 0.1rem;
   margin: 1rem 0;
   color: #d1363a;
+}
+
+.zelda {
+  font-family: "zelda", sans-serif;
+  font-size: 3rem !important;
+  color: rgba(255, 33, 33, 0.1294117647);
+  text-shadow: 2px 2px 4px rgba(0, 128, 0, 0.3);
+}
+
+.pubg {
+  font-family: "Teko", sans-serif;
+  font-size: 3rem !important;
+  transition: color 0.3s ease-out;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+.pubg:hover {
+  color: #FFC300;
+}
+
+.tlou {
+  font-family: "Bebas Neue", sans-serif;
+  font-size: 4rem !important;
+  background: linear-gradient(#fff 40%, #111 90%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
 /*************** END OF TYPOS ***************/
@@ -111,6 +152,11 @@ body {
   border: none;
 }
 
+.fade-in-section {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
 .alert-info {
   background-color: #1f1f1f;
   border: none;
@@ -118,37 +164,45 @@ body {
 }
 
 /*************** END OF GLOBALS ***************/
-.carousel-item {
+.carousel-inner .carousel-item {
+  position: relative;
   width: 100%;
+  height: 44rem;
+  padding: 0;
+  margin: 0;
 }
-.carousel-item::after {
+.carousel-inner .carousel-item::after {
   content: "";
   width: 100%;
-  height: 20rem;
+  height: 100%;
   background-color: #000;
+  object-fit: cover;
   position: absolute;
   top: 0;
   left: 0;
   opacity: 0.7;
   z-index: 1;
 }
-.carousel-item img {
+.carousel-inner .carousel-item img {
   width: 100%;
-  height: 20rem;
-  object-fit: cover;
+  height: 100%;
+  object-fit: cover !important;
   animation: aparecer 8s ease-in-out forwards, ampliar 12s ease-in-out forwards;
 }
-.carousel-item .carousel-caption {
-  width: 100%;
-  z-index: 100;
+.carousel-inner .carousel-item .carousel-caption {
+  width: fit-content;
   position: absolute;
-  top: 50%;
-  left: 0;
-  opacity: 0;
-  animation: aparecer 4s ease-in-out forwards;
+  top: 20%;
+  left: 15%;
+  color: white;
+  text-align: center;
+  text-align: center;
+  z-index: 100;
 }
-.carousel-item .carousel-caption h1, .carousel-item .carousel-caption h2 {
-  font-size: 1.5rem;
+.carousel-inner .carousel-item .carousel-caption h1 {
+  width: 100%;
+  font-size: 2.5rem !important;
+  font-weight: bolder;
 }
 
 /* FORMS */
@@ -220,31 +274,100 @@ textarea::placeholder {
   background-color: #d1363a;
 }
 
-/*************** END OF BUTTONS ***************/
-.card {
+.btn-icon {
   display: flex;
-  justify-content: space-around;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-icon i {
+  margin-right: 0.5rem;
+}
+
+.btn-icon.active i {
+  color: green;
+}
+
+/*************** END OF BUTTONS ***************/
+.card, .game-preview {
+  display: flex;
   width: 20rem;
-  height: 30rem;
+  height: auto;
   margin: 1rem;
-  padding: 0;
+  padding: 0 0;
   border-radius: 0.7rem;
   background-color: #111;
   z-index: 10;
 }
-.card .image {
-  width: fit-content;
-  height: 20rem !important;
-}
-.card .image img {
+.card .image, .game-preview .image {
   width: 100%;
-  height: 100%;
+  height: 15rem;
+}
+.card .image img, .game-preview .image img {
+  width: 100%;
+  height: 15rem;
   object-fit: cover;
   border-radius: 0.7rem 0.7rem 0 0;
 }
-.card .content {
+.card .content, .game-preview .content {
   width: 100%;
+  height: 100%;
   padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  justify-content: space-between;
+}
+
+.game-preview {
+  position: relative;
+}
+.game-preview .image {
+  position: relative;
+}
+.game-preview .image img {
+  border-radius: 1rem !important;
+}
+.game-preview .image::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: #000;
+  opacity: 0;
+  z-index: 100;
+  border-radius: 1rem;
+  transition: all 0.3s ease;
+}
+.game-preview .content {
+  display: flex;
+  position: absolute;
+  width: 20rem;
+  height: 15rem;
+  z-index: 1000;
+  border-radius: 1rem;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+.game-preview .content button, .game-preview .content .precio {
+  display: none;
+}
+.game-preview .content .game-title {
+  color: #d1363a;
+  font-weight: bolder;
+}
+.game-preview:hover .image::after {
+  opacity: 0.8;
+}
+.game-preview:hover .content {
+  opacity: 1;
 }
 
 .aside {
@@ -283,9 +406,45 @@ textarea::placeholder {
   font-size: 0.9rem !important;
 }
 
+.images {
+  background-color: #111;
+  z-index: 1;
+  margin: 1rem 0;
+}
+.images .image {
+  width: auto;
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+.images .image img {
+  position: relative;
+  width: 100%;
+  height: 15rem;
+  object-fit: cover;
+  border-radius: 0.5rem;
+}
+.images .image:after {
+  content: "";
+  position: absolute;
+  background: #111;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.3;
+}
+.images .image:hover {
+  transform: scale(1.2);
+  opacity: 1;
+}
+.images .image:not(:hover) {
+  opacity: 0.7;
+  z-index: 1;
+}
+
 /*************** HEADER ***************/
 .header {
-  background-color: #111;
+  background-color: transparent;
   transition: background-color 0.3s ease-in-out;
   z-index: 100;
 }
@@ -339,45 +498,78 @@ textarea::placeholder {
 }
 
 /*************** END OF HEADER ***************/
-/*************** HOME ***************/
 .hero {
-  position: relative;
-}
-.hero .image {
-  position: relative;
-  height: 8rem;
-  background-image: url("https://images4.alphacoders.com/478/thumb-1920-47816.jpg");
-  background-size: 100%;
+  background-size: contain;
+  background-position: top;
   background-repeat: no-repeat;
-  background-position: center;
-}
-.hero .image::after {
-  content: "";
-  width: 100%;
-  height: 100%;
-  background-color: #111;
-  position: absolute;
-  top: 0;
-  opacity: 0.7;
-}
-.hero .content {
-  font-size: 0.6rem;
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  top: 0;
-}
-.hero .content .title {
-  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.newsletter .news-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.banner {
+  width: 100%;
+  height: 40rem;
+  position: relative;
+  background-color: #fff;
+  overflow: hidden;
 }
-.newsletter .news-content h2 {
-  color: #000;
+.banner .images .background {
+  position: absolute;
+  top: 0;
+  left: 45%;
+  width: 100%;
+  height: 100%;
+  background-color: #F47D31;
+  clip-path: polygon(0 0, 100% 0, 500% 100%, 15% 100%); /* Forma diagonal */
+}
+.banner .images .imagen {
+  height: fit-content;
+  position: absolute;
+  top: 3rem;
+  left: 40%;
+}
+.banner .images .imagen img {
+  width: 100%;
+  object-fit: cover;
+}
+.banner .content {
+  width: fit-content;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding: 4rem;
+}
+.banner .content .counterStrike {
+  width: 100%;
+  text-align: center;
+  -webkit-text-fill-color: #000;
+}
+.banner .content .counterStrike span {
+  color: #F47D31 !important;
+  -webkit-text-fill-color: #fff;
+  -webkit-text-stroke: 2px #000;
+}
+.banner .content .counterStrike span img {
+  width: 4rem;
+}
+.banner .content .trailer {
+  width: 100%;
+}
+.banner .content .trailer iframe {
+  width: 100%;
+  border-radius: 1rem;
+}
+.banner .content .options .platforms .icon {
+  width: fit-content;
+}
+.banner .content .options .platforms .icon img {
+  width: 8rem;
+  object-fit: contain;
+  transition: all 0.3s ease-in-out;
+}
+.banner .content .options .platforms .icon img:hover {
+  transform: scale(1.3);
 }
 
 /*************** END OF HOME ***************/

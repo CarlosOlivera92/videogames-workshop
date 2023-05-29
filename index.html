@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,12 +11,19 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" crossorigin="anonymous" />   
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
         <script src="js/bootstrap.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/intersection-observer@0.12.2/intersection-observer.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
         <script type="module" src="js/app.js"></script>
     </head>
     <body>
+        <div id="loading" class="text-center col-md-8 p-4" style="display: none;">
+            <div class="spinner-border text-primary" role="status">
+              <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p>Cargando...</p>
+        </div>
         <!-- HEADER -->
         <header id="header" class="header container-fluid d-flex flex-column flex-md-row flex-xl-row align-items-center justify-content-between p-3 p-md-3">
             <!-- LOGO -->
@@ -29,12 +36,145 @@
             <nav class="navmenu">
                 <ul class="d-flex m-0 p-0 align-items-center">
                     <li><a id="home-link" href="../index.html" title="inicio">Inicio</a></li>
-                    <li class="dropdown">
-                    <a href="pages/productos.html">Productos</a>
-                    <li><a id="contact-link" href="contacto.html" title="contacto">Contacto</a></li>
+                    <li><a id="products-link" href="pages/productos.html">Productos</a></li>
+                    <li><a id="contact-link" href="pages/contacto.html" title="contacto">Contacto</a></li>
                 </ul>
             </nav>
         </header>
 
+        <div class="hero " id="caroussel">
+            <div class="container-fluid m-0 p-0">
+                <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        <div class="carousel-item active">
+                          <img src="https://c4.wallpaperflare.com/wallpaper/666/441/256/pubg-pubh-playerunknown-s-battlegrounds-wallpaper-preview.jpg" class="d-block w-100" alt="Imagen 1">
+                          <div class="carousel-caption">
+                            <div class="title">
+                                <h1 class="pubg">PUBG: PlayerUnknown's Battlegrounds</h1>
+                            </div>
+                            <div class="divider w-100"></div>
+                            <div class="content d-flex flex-column align-items-start">
+                                <p>¡Compralo ya mismo!</p>
+                                <a href="pages/productos.html">
+                                    <button type="button" class="btn button">Ir al Producto</button>
+                                </a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="carousel-item">
+                          <img src="https://www.hdwallpaperslife.com/wp-content/uploads/2020/06/the_last_of_us_part_ii_joel_ellie_4k.jpg" class="d-block w-100" alt="Imagen 2">
+                          <div class="carousel-caption">
+                            <div class="title">
+                                <h1 class="tlou">The Last Of Us <span class="subtitle">Parte 1</span> </h1>
+                            </div>
+                            <div class="divider w-100"></div>
+                            <div class="content d-flex flex-column align-items-start">
+                                <p>¡Compralo ya mismo!</p>
+                                <a href="pages/productos.html">
+                                    <button type="button" class="btn button">Ir al Producto</button>
+                                </a>
+                            </div>
+
+                          </div>
+                        </div>
+                        <div class="carousel-item">
+                          <img src="https://wallpaperaccess.com/full/4520741.jpg" class="d-block w-100" alt="Imagen 3">
+                          <div class="carousel-caption">
+                            <div class="title">
+                                <h1 class="zelda">The Legend of Zelda: Tears of the Kingdom</h1>
+                            </div>
+                            <div class="divider w-100"></div>
+                            <div class="content d-flex flex-column align-items-start">
+                                <p>¡Compralo ya mismo!</p>
+                                <a href="pages/productos.html">
+                                    <button type="button" class="btn button">Ir al Producto</button>
+                                </a>                                
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Siguiente</span>
+                  </button>
+                </div>
+            </div>
+        </div>
+
+        <section class="products container-fluid p-4 fade-in-section" id="products">
+            <div class="cards justify-content-center row row-cols-1 row-cols-md-2 row-cols-xl-3 row-cols-xxl-4">
+
+            </div>
+        </section>
+
+        <section class="banner fade-in-section">
+            <div class="images">
+                <div class="background">
+
+                </div>
+                <div class="imagen d-none d-md-block">
+                    <img src="https://cdn.cloudflare.steamstatic.com/apps/csgo/images/csgo_react//cs2/header_ctt.png" alt=""> 
+                </div>
+            </div>
+            <div class="content p-3 p-md-auto">
+                <div class="col title">
+                    <p class="counterStrike">
+                        Counter 
+                        <span>
+                            <img src="https://www.svgrepo.com/show/305906/counter-strike.svg" alt="">
+                        </span>
+                        Strike
+                        <span>2</span> 
+                    </p>
+                </div>
+                <div class="col trailer">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/TjMJy22N8e0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+                </div>
+                <div class="col options">
+                    <div class="platforms d-flex flex-row align-items-center">
+                        <div class="icon">
+                            <a href="https://steamcommunity.com/faqs/steam-help/view/5ED2-ED8E-81F4-0C18" target="_blank">
+                                <img src="assets/img/steampowered.svg" alt="">
+                            </a>
+                        </div>
+                        <div class="icon">
+                            <img src="assets/img/windowslogo.png" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="container-fluid p-4 images fade-in-section">
+            <div class="cards justify-content-center row row-cols-3" id="images-container">
+
+            </div>
+        </section>
+
+        <footer class="footer container-fluid p-2 p-md-4 row m-0 align-items-center justify-content-center justify-content-md-start">
+            <!-- LOGO -->
+            <div class="footer-logo col-auto">
+                <a href="index.html"> 
+                    <img src="assets/img/logo-2.png" alt="goodgame-logo" title="goodgame-logo">
+                </a>
+            </div>
+            <!-- NAVMENU -->
+            <nav class="footer-nav col-auto">
+                <ul class="d-flex m-0 p-0">
+                    <li><a href="index.html" title="inicio">Inicio</a></li>
+                    <li><a href="pages/productos.html" title="juegos">Juegos</a></li>
+                    <li><a href="pages/nosotros.html" title="nosotros">Nosotros</a></li>
+                    <li><a href="pages/contacto.html" title="contacto">Contacto</a></li>
+                </ul>
+            </nav>
+            <!-- DISCLAIMER -->
+            <div class="disclaimer col-auto">
+                <p class="m-0"> &#169;GoodGame 2023 Todos los derechos reservados</p>
+            </div>
+        </footer>
     </body>
 </html>

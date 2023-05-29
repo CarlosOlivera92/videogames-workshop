@@ -10,14 +10,20 @@ export class Factura {
     calcularTotal() {
         const GANANCIAS = 0.45;
         const PAIS = 0.30;
-        this.total = this.productos.reduce( (total, producto) => {
-            return total + producto.precio;
-        },0 )
+        this.total = this.productos.reduce((total, producto) => {
+          const precio = parseFloat(producto.precio); // Convertir el precio a número
+          if (!isNaN(precio)) {
+            return total + precio;
+          } else {
+            return total;
+          }
+        }, 0);
+      
         let divisaConvertida = this.total * 470;
         let ganancias = divisaConvertida * GANANCIAS;
-        let pais = (divisaConvertida * PAIS);
+        let pais = divisaConvertida * PAIS;
         let totalImpuestos = divisaConvertida + ganancias + pais;
-        let formatedTotal = totalImpuestos.toLocaleString('es-AR', {style: 'currency', currency: 'ARS'});
+        let formatedTotal = totalImpuestos.toLocaleString('es-AR', { style: 'currency', currency: 'ARS' });
         this.total = formatedTotal;
     }
 }
