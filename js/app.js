@@ -6,7 +6,7 @@ import { getGameData } from './services/rawgService.js';
 const { jsPDF } = window.jspdf
 
 const toastr = window.toastr;
-const productos = [];
+let productos = [];
 let carrito = [];
 
 let currentPageUrl = window.location.href;
@@ -14,7 +14,6 @@ let currentPageUrl = window.location.href;
 const cartContainer = document.querySelector('.cart-items');
 const cartTitle = document.querySelector('.cart-title');
 const checkoutContainer = document.getElementById('cart-checkout');
-
 const GANANCIAS = 0.45;
 const PAIS = 0.30;
 let valorDolar = 470;
@@ -81,21 +80,29 @@ const generatePrice = () => {
   const max = 90;
   return (Math.floor(Math.random() * (max - min + 1)) + min).toFixed(2);
 }
-const getData = async (cantProductos, currentPageUrl) => {
+const getData = async (cantProductos, currentPageUrl, params) => {
+  loading.style.display = 'flex';
+  loading.style.zIndex = '1000';
+
+  productos = [];
   try {
-    let juegos = await getGameData();
+    let juegos = await getGameData(params);
     for (let juego of juegos.results) {
       productos.push(juego);
-      console.log(juego)
     }
     productos.forEach((product) => {
       if (!product.precio) {
         product.precio = generatePrice();
       }
     });
+    console.log(productos);
 
-    createProductsDom(cantProductos, currentPageUrl);
-    renderImages( cantProductos, ...productos,);
+    if (currentPageUrl.endsWith('/productos.html')) {
+      createProductsDom(cantProductos, currentPageUrl);
+    } else if (currentPageUrl.endsWith('/index.html')) {
+      createProductsDom(cantProductos, currentPageUrl);
+      renderImages( cantProductos, ...productos,);
+    } 
 
   } catch (error) {
     console.log('Error al obtener los datos:', error);
@@ -110,9 +117,15 @@ const calcularImpuestos = (base) => {
 }
 // Crear elementos HTML para los productos
 const createProductsDom = (cantProductos, currentPageUrl) => {
+  let cardsContainer = ' ';
+  let productContainer = ' ';
+  productContainer = document.getElementById('products');
+  cardsContainer = productContainer.querySelector(".cards");
+  
+  // Vaciar el contenedor de tarjetas
+  cardsContainer.innerHTML = '';
+  
 
-  const productContainer = document.getElementById('products');
-  const cardsContainer = productContainer.querySelector(".cards");
   let newClassElements;
   let buttonClass;
   if (currentPageUrl.endsWith('/index.html')) {
@@ -148,13 +161,14 @@ const createProductsDom = (cantProductos, currentPageUrl) => {
         </div>
       </div>
     `;
-  cardsContainer.innerHTML += card;
+    cardsContainer.innerHTML += card;
   }
   cardsContainer.innerHTML += `
-  <a class=" ${buttonClass}" href="pages/productos.html">
-  <button class="btn button w-100 p-2">Ir a Productos</button>
-  </a>
+    <a class="${buttonClass}" href="pages/productos.html">
+      <button class="btn button w-100 p-2">Ir a Productos</button>
+    </a>
   `;
+
   // Agregar evento de clic en el botón "Agregar al carrito"
   const addBtn = document.querySelectorAll('.addBtn');
   for (let i = 0; i < addBtn.length; i++) {
@@ -327,36 +341,87 @@ const setAlertVisibility = ( alertElements, isVisible ) => {
   }
 }
 if (currentPageUrl.endsWith("/productos.html")) {
+  
   const loading = document.getElementById('loading');
   const btnIcons = document.querySelectorAll('.btn-icon');
+  const compraExitosa = localStorage.getItem('compraExitosa');
+  const pagination = document.getElementById('pagination');
+  const modal = new bootstrap.Modal(document.getElementById('modal'));
+  let currentPage = 1; // Página actual
+  let params = '';
   loading.style.display = 'flex';
-  loading.style.flexDirection = 'Column';
+  loading.style.flexDirection = 'column';
   loading.style.position = 'fixed';
   loading.style.top = '0';
   loading.style.left = '0';
   loading.style.width = '100%';
   loading.style.height = '100%';
   loading.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-  loading.style.display = 'flex';
   loading.style.justifyContent = 'center';
   loading.style.alignItems = 'center';
+  
+  if (compraExitosa === 'true') {
+    // Mostrar el modal
+    modal.show();
+  
+    // Limpiar el indicador de compra en el almacenamiento local
+    localStorage.removeItem('compraExitosa');
+  }
+  
   btnIcons.forEach(btnIcon => {
     const input = btnIcon.querySelector('input');
     const iconWrapper = btnIcon.querySelector('.icon-wrapper');
-
+  
     btnIcon.addEventListener('click', function() {
       input.checked = !input.checked;
       iconWrapper.classList.toggle('active', input.checked);
     });
   });
-  getData(20, currentPageUrl);
-  // Obtener el formulario de filtro
-
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+  document.getElementById('filterForm').addEventListener('submit', function (event) {
+    event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
+    const formData = new FormData(this);
   
+  
+    const selectedPlatforms = Array.from(formData.getAll('platforms'));
+    // Concatenar los valores de las opciones seleccionadas separados por comas
+    if (selectedPlatforms.length > 0) {
+      params += 'platforms=' + selectedPlatforms.join(',');
+    }
+  
+    // Llamar a la función getData con los query params como argumento
+    getData(20, currentPageUrl, params);
+  });
+  
+  pagination.addEventListener('click', (event) => {
+    const selectedPage = event.target.value;
+  
+    if (selectedPage === 'next') {
+      currentPage++;
+    } else if (selectedPage === 'back') {
+      if (currentPage > 1) {
+        currentPage--;
+      }
+    } else if (selectedPage.length > 0) {
+      currentPage = parseInt(selectedPage);
+    }
+    if (params !== '') {
+      params += `&page=${currentPage}`;
+    } else {
+      params += `page=${currentPage}`;
 
-
-
-  if(carrito !== null ) {
+    }
+    getData(20, currentPageUrl, params);
+    scrollToTop();
+  });
+  
+  getData(20, currentPageUrl);
+  if (carrito !== null) {
     renderCart();
   }
 } else if (currentPageUrl.endsWith('/compra.html')) {
@@ -742,7 +807,9 @@ if (currentPageUrl.endsWith("/productos.html")) {
 
         // Mostrar alerta de compra exitosa
       setTimeout(() => {
+        localStorage.setItem('compraExitosa', 'true');
         window.location.href = 'productos.html';
+
 
       }, 2000); // Esperar 500 ms antes de mostrar la alerta
       })

@@ -164,6 +164,45 @@ body {
 }
 
 /*************** END OF GLOBALS ***************/
+.modal .modal-dialog .modal-content {
+  border-radius: 1rem;
+  background-color: #1f1f1f;
+}
+.modal .modal-dialog .modal-content .modal-header {
+  border: none;
+  outline: none;
+}
+.modal .modal-dialog .modal-content .modal-header .btn-close {
+  background-color: red;
+}
+.modal .modal-dialog .modal-content .modal-body .top-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+.modal .modal-dialog .modal-content .modal-body .top-content .iconCheck {
+  width: 6rem;
+  object-fit: cover;
+}
+.modal .modal-dialog .modal-content .modal-body .top-content p {
+  padding: 0;
+  margin: 0;
+}
+.modal .modal-dialog .modal-content .modal-footer {
+  border: none;
+  outline: none;
+}
+.modal .modal-dialog .modal-content .modal-footer .btn-secondary {
+  background-color: transparent;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: bolder;
+}
+.modal .modal-dialog .modal-content .modal-footer .btn-secondary:hover {
+  background-color: #2ecc71;
+}
+
 .carousel-inner .carousel-item {
   position: relative;
   width: 100%;
@@ -498,6 +537,19 @@ textarea::placeholder {
 }
 
 /*************** END OF HEADER ***************/
+.pagination .page-link {
+  background-color: transparent;
+  border: none;
+  margin: 1rem;
+  color: #fff;
+  border-radius: 1rem;
+}
+.pagination .page-link:hover {
+  background-color: #d1363a;
+  font-weight: bolder;
+  color: #DBFE7A;
+}
+
 .hero {
   background-size: contain;
   background-position: top;

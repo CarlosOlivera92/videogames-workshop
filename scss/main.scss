@@ -9,6 +9,7 @@
 @import 'base/reset';
 @import 'utilities/global';
 
+@import 'components/modals';
 @import 'components/carousel';
 @import 'components/forms';
 @import 'components/inputs';
@@ -16,6 +17,7 @@
 @import 'components/cards';
 
 @import 'layout/header';
+@import 'layout/navigation';
 
 @import 'views/home';
 @import 'layout/footer';

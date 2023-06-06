@@ -1,0 +1,15 @@
+.pagination {
+    .page-link {
+        background-color: transparent;
+        border: none;
+        margin: 1rem;
+        color: #fff;
+        border-radius: 1rem;
+        &:hover {
+            background-color: map-get($map: $colors, $key: cred);
+            font-weight: bolder;
+            color: map-get($map: $colors, $key: cgreen);
+        }
+
+    }
+}
