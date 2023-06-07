@@ -347,6 +347,8 @@ if (currentPageUrl.endsWith("/productos.html")) {
   const compraExitosa = localStorage.getItem('compraExitosa');
   const pagination = document.getElementById('pagination');
   const modal = new bootstrap.Modal(document.getElementById('modal'));
+  const searchInput = document.getElementById('searchInput');
+
   let currentPage = 1; // Página actual
   let params = '';
   loading.style.display = 'flex';
@@ -421,6 +423,16 @@ if (currentPageUrl.endsWith("/productos.html")) {
   });
   
   getData(20, currentPageUrl);
+
+  
+  searchInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      const searchText = searchInput.value.toLowerCase();
+      params += `&search=${searchText}`;
+      getData(20, currentPageUrl, params);
+    }
+  });
+  
   if (carrito !== null) {
     renderCart();
   }
