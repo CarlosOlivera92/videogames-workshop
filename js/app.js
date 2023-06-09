@@ -438,6 +438,14 @@ if (currentPageUrl.endsWith("/productos.html")) {
   }
 } else if (currentPageUrl.endsWith('/compra.html')) {
 
+  const billPreview = document.getElementById('bill-container');
+  billPreview.style.display="none";
+
+  let content;
+  let factura;
+  let cliente;
+  let productos;
+
   const customerName = document.getElementById('name');
   const customerNameErrorMessage = customerName.parentNode.querySelector('.alert-danger');
   const customerNameSuccessMessage = customerName.parentNode.querySelector('.alert-success');
@@ -527,8 +535,8 @@ if (currentPageUrl.endsWith("/productos.html")) {
     const customer = new Customers(customerName.value, address.value, phoneNumber.value, emailInput.value);
     const tarjetaDeCredito = new TarjetasDeCredito(cardNumberInput.value, securityCodeInput.value,fecha.value);
     const factura = new Factura(generarNumeroFactura(), fechaFormateada, customer, carrito, tarjetaDeCredito);
-    
     factura.calcularTotal();
+    console.log(factura)
     
 
     let facturacion = JSON.stringify(factura);
@@ -720,118 +728,121 @@ if (currentPageUrl.endsWith("/productos.html")) {
     }
     validateForm();
   })
-  submitBtn.addEventListener('click', () => {
+  submitBtn.addEventListener('click', (event) => {
+    event.preventDefault();
     loading.style.display = 'flex';
     loading.className = loading.className + ' flex-column align-items-center justify-content-center'
     const checkoutForm = document.getElementById('checkout-form');
-    const factura = generarFactura();
-    const cliente = factura.cliente;
-    const productos = factura.productos;
+    factura = generarFactura();
+    cliente = factura.cliente;
+    productos = factura.productos;
     let productosHTML = '';
     let productosLista = '';
 
     productos.forEach((producto) => {
-      productosHTML += `<p>Producto: ${producto.nombre}</p>`;
-      productosLista += `Producto: ${producto.nombre}`;
+      productosHTML += `<p>Producto: ${producto.name}</p>`;
+      productosLista += `Producto: ${producto.name}`;
     });
+
+    content = `
+    GoodGame Gaming Workshop:
+    Fecha: ${factura.fecha}
+    Número de factura: ${factura.numero}
+    ---------------------------------
+    Cliente: ${cliente.name}
+    Email: ${cliente.emailAddress}
+    Número de teléfono: ${cliente.phoneNumber}
+    Dirección: ${cliente.address}
+    ---------------------------------
+    ${productosLista};
+    ---------------------------------
+    Tarjeta de crédito: MasterCard
+    Banco: Banco de la República Argentina
+    Titular: ${cliente.name}
+    ---------------------------------
+    Total: ${factura.total} ARS
+    `;
+    
     submitBtn.disabled = true;
     checkoutForm.style.display = 'none ';
-    setTimeout(function() {
-      // Ocultar el elemento de carga
+
+    billPreview.innerHTML = ` <p class="h1">Vista previa de su factura</p>
+    <div class="factura row">
+      <div class="datos-factura col-6">
+        <p class="h2"> Datos de la factura: </p>
+        <p>Numero de factura: ${factura.numero}</p>
+        <p>Fecha de emisión: ${factura.fecha}</p>
+      </div>
+      <div class="datos-cliente col-6">
+        <p class="h2">Datos del cliente</p>
+        <p>Nombre: ${cliente.name}</p>
+        <p>Email: ${cliente.emailAddress}</p>
+        <p>Número de teléfono: ${cliente.phoneNumber}</p>
+        <p>Dirección: ${cliente.address}</p>
+      </div>
+      <div class="datos-productos col-6">
+        <p class="h2">Datos de los productos </p>
+        ${productosHTML}
+      </div>
+      <div class="datos-tarjeta col-6">
+        <p class="h2">Datos de la tarjeta de crédito </p>
+        <p>Tarjeta de crédito: MasterCard</p>
+        <p>Banco: Banco de la República Argentina</p>
+        <p>Titular: ${cliente.name}</p>
+      </div>
+      <p>Total: ${factura.total}</p>
+    </div>
+    <div class="buttons">
+      <button type="button" class="btn btn-success" id="pdfBtn">Exportar PDF</button>
+      <button class="btn btn-success" id="buyBtn">Comprar Ahora</button>
+    </div>`
+    const pdfBtn = document.getElementById('pdfBtn');
+    const buyBtn = document.getElementById('buyBtn');
+   
+    // Evento de clic en el botón de exportar PDF
+    pdfBtn.addEventListener('click', (event) => {
+      event.preventDefault();
+      const doc = new jsPDF();
+      const contenido = content;
+      doc.text(20, 20, contenido);
+      doc.save('factura.pdf');
+      event.preventDefault();
+
+    });
+    buyBtn.addEventListener('click', () => {
+      localStorage.removeItem('cart');
+      sessionStorage.removeItem('facturacion');
+      loading.style.display = 'flex';
+      loading.style.position = 'fixed';
+      loading.style.top = '0';
+      loading.style.left = '0';
+      loading.style.width = '100%';
+      loading.style.height = '100%';
+      loading.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+      loading.style.display = 'flex';
+      loading.style.justifyContent = 'center';
+      loading.style.alignItems = 'center';
+  
+      // Mostrar alerta de compra exitosa
+    setTimeout(() => {
+      localStorage.setItem('compraExitosa', 'true');
+      window.location.href = 'productos.html';
+  
+  
+    }, 2000); // Esperar 500 ms antes de mostrar la alerta
+    })   
+    setTimeout(() => {
+      
       loading.style.display = 'none';
       toastr.success('Datos ingresados correctamente!');
-      checkoutForm.outerHTML = `
-        <div class="col-md-7 m-3 p-4 checkout-preview rounded">
-          <p class="h1">Vista previa de su factura</p>
-          <div class="factura row">
-            <div class="datos-factura col-6">
-              <p class="h2"> Datos de la factura: </p>
-              <p>Numero de factura: ${factura.numero}</p>
-              <p>Fecha de emisión: ${factura.fecha}</p>
-            </div>
-            <div class="datos-cliente col-6">
-              <p class="h2">Datos del cliente</p>
-              <p>Nombre: ${cliente.name}</p>
-              <p>Email: ${cliente.emailAddress}</p>
-              <p>Número de teléfono: ${cliente.phoneNumber}</p>
-              <p>Dirección: ${cliente.address}</p>
-            </div>
-            <div class="datos-productos col-6">
-              <p class="h2">Datos de los productos </p>
-              ${productosHTML}
-            </div>
-            <div class="datos-tarjeta col-6">
-              <p class="h2">Datos de la tarjeta de crédito </p>
-              <p>Tarjeta de crédito: MasterCard</p>
-              <p>Banco: Banco de la República Argentina</p>
-              <p>Titular: ${cliente.name}</p>
-            </div>
-            <p>Total: ${factura.total}</p>
-          </div>
-          <div class="buttons">
-            <button class="btn btn-success" id="pdfBtn">Exportar PDF</button>
-            <button class="btn btn-success" id="buyBtn">Comprar Ahora</button>
-          </div>
-        </div>
-      `;
-    
-      const pdfBtn = document.getElementById('pdfBtn');
-      const buyBtn = document.getElementById('buyBtn');
-      const content = `
-      GoodGame Gaming Workshop:
-      Fecha: ${factura.fecha}
-      Número de factura: ${factura.numero}
-      ---------------------------------
-      Cliente: ${cliente.name}
-      Email: ${cliente.emailAddress}
-      Número de teléfono: ${cliente.phoneNumber}
-      Dirección: ${cliente.address}
-      ---------------------------------
-      ${productosLista};
-      ---------------------------------
-      Tarjeta de crédito: MasterCard
-      Banco: Banco de la República Argentina
-      Titular: ${cliente.name}
-      ---------------------------------
-      Total: ${factura.total} ARS
-      `;
+      billPreview.style.display="flex";
+      billPreview.style.flexDirection="column";
 
-      // Evento de clic en el botón de exportar PDF
-      pdfBtn.addEventListener('click', () => {
-        const doc = new jsPDF();
-        const contenido = content;
-        doc.text(20, 20, contenido);
-        doc.save('factura.pdf');
-      });
-      buyBtn.addEventListener('click', () => {
-        localStorage.removeItem('cart');
-        sessionStorage.removeItem('facturacion');
-        loading.style.display = 'flex';
-        loading.style.position = 'fixed';
-        loading.style.top = '0';
-        loading.style.left = '0';
-        loading.style.width = '100%';
-        loading.style.height = '100%';
-        loading.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
-        loading.style.display = 'flex';
-        loading.style.justifyContent = 'center';
-        loading.style.alignItems = 'center';
-
-        // Mostrar alerta de compra exitosa
-      setTimeout(() => {
-        localStorage.setItem('compraExitosa', 'true');
-        window.location.href = 'productos.html';
-
-
-      }, 2000); // Esperar 500 ms antes de mostrar la alerta
-      })
-    
-      // Resto de tu código aquí...
-    
       // Habilitar nuevamente el botón de envío
       submitBtn.disabled = false;
     }, 2000);
 });
+ 
 } else if (currentPageUrl.endsWith('/index.html')) {
 
 const sections = document.querySelectorAll('.fade-in-section');
